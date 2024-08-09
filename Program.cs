@@ -1,26 +1,59 @@
 ﻿int[] dias = [1, 2, 3, 4, 5, 6, 7];
 int[] semanas = [1, 2, 3, 4, 5];
 int[,] mes = new int[dias.Length, semanas.Length];
-foreach (int semana in semanas)
+Titulo();
+Console.WriteLine("Bienvenido. Por favor, elige una de las siguientes opciones para continuar");
+Console.WriteLine();
+Console.WriteLine("1. Ingresar manualmente las temperaturas mensuales.");
+Console.WriteLine("2. Simular la carga de temperaturas automáticamente.");
+int[] opciones = { 1, 2 };
+string texto_opciones = "Opción no válida. Por favor, ingresa 1 o 2 para continuar.";
+int opc = ObtenerOpcion(opciones, texto_opciones);
+Console.Clear();
+if (opc == 1)
 {
-    Titulo();
-    Console.WriteLine("Ingrese las temperaturas diarias correspondientes al mes completo.");
-    Console.WriteLine("Asegurese de introducir los datos en grados Celsius.");
-    Console.WriteLine();
-    foreach (int dia in dias)
+    foreach (int semana in semanas)
     {
-        mes[dia - 1, semana - 1] = ObtenerTemperaturas(dia, semana);
-        if (semana == 5 && dia == 3)
+        Titulo();
+        Console.WriteLine("Ingrese las temperaturas diarias correspondientes al mes completo.");
+        Console.WriteLine("Asegurese de introducir los datos en grados Celsius.");
+        Console.WriteLine();
+        foreach (int dia in dias)
         {
-            break;
+            mes[dia - 1, semana - 1] = ObtenerTemperaturas(dia, semana);
+            if (semana == 5 && dia == 3)
+            {
+                break;
+            }
+        }
+        Console.Clear();
+    }
+}
+else
+{
+    Random random = new Random();
+    //Rango histórico menos margenes.
+    int temperatura_inicial = random.Next((-79),46);
+    int min = (temperatura_inicial - 10);
+    int max = (temperatura_inicial + 10);
+    foreach (int semana in semanas)
+    {
+        foreach (int dia in dias)
+        {
+            int temp_aleatoria = random.Next(min, max);
+            mes[dia - 1, semana - 1] = temp_aleatoria;
+            if (semana == 5 && dia == 3)
+            {
+                break;
+            }
         }
     }
-    Console.Clear();
 }
 bool continuar = true;
 do
 {
     Titulo();
+    MostrarCalendario();
     Console.WriteLine("MENÚ PRINCIPAL");
     Console.WriteLine();
     Console.WriteLine("Para continuar, elija una opción presionando el número correspondiente:");
@@ -34,13 +67,9 @@ do
     Console.WriteLine("7. Pronóstico 5 días Posteriores.");
     Console.WriteLine("8. Salir.");
     Console.WriteLine();
-    int[] opciones = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    bool opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int opcion);
-    while (!opc_valida || !Array.Exists(opciones, op => op == opcion))
-    {
-        Console.WriteLine("Opción no válida. Por favor seleccíone un número del menú. ");
-        opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out opcion);
-    }
+    int[] opciones_menu = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    string texto_menu = "Opción no válida. Por favor seleccíone un número del menú.";
+    int opcion = ObtenerOpcion(opciones_menu, texto_menu);
     Console.Clear();
     switch (opcion)
     {
@@ -68,7 +97,9 @@ do
         case 8:
             Titulo();
             continuar = false;
-            Console.WriteLine("Gracias¡Hasta pronto!");
+            Console.WriteLine("Gracias por utilizar nuestro servicio.");
+            Console.WriteLine();
+            Console.WriteLine("¡Hasta pronto!");
             break;
     }
 }
@@ -78,8 +109,24 @@ void Titulo()
     Console.WriteLine("Weather Forecast");
     Console.WriteLine();
 }
+int ObtenerOpcion(int[] opciones, string texto)
+{
+    bool opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int opcion);
+    while (!opc_valida || !Array.Exists(opciones, op => op == opcion))
+    {
+        Console.WriteLine(texto);
+        opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out opcion);
+    }
+    return opcion;
+}
+void MostrarCalendario()
+{
+    Console.WriteLine("Temperaturas Mensuales:");
+    MostrarMatriz(mes);
+}
 int ObtenerTemperaturas(int dia, int semana)
 {
+    //Rango histórico de temperaturas registradas del planeta.
     int[] temps_validas = Enumerable.Range(-89, 56 - (-89) + 1).ToArray();
     Console.WriteLine("Por favor,ingrese la temperatura del día " + dia + " de la semana " + semana);
     bool es_valido = int.TryParse(Console.ReadLine(), out int numero);
@@ -89,6 +136,35 @@ int ObtenerTemperaturas(int dia, int semana)
         es_valido = int.TryParse(Console.ReadLine(), out numero);
     }
     return numero;
+}
+void MostrarMatriz(int[,] matriz)
+{
+    Console.WriteLine();
+    string[] sietedias = { "L", "M", "Mi", "J", "V", "S", "D" };
+    Console.Write("S\\D|");
+    foreach (string dia in sietedias)
+    {
+        Console.Write(dia.PadLeft(4));
+    }
+    Console.WriteLine(" |");
+    Console.WriteLine("----------------------------------");
+    for (int fila = 1; fila <= matriz.GetLength(1); fila++)
+    {
+        Console.Write(fila.ToString().PadRight(3) + "|");
+        for (int columna = 1; columna <= matriz.GetLength(0); columna++)
+        {
+            if(columna > 3 && fila == 5)
+            {
+                Console.Write("*".PadLeft(4));
+            }
+            else
+            {
+                Console.Write(mes[columna - 1, fila - 1].ToString().PadLeft(4));
+            }
+        }
+        Console.WriteLine(" |");
+    }
+    Console.WriteLine("");
 }
 int ObtenerNumero( string texto1, string texto2, int[] arreglo)
 {
@@ -151,6 +227,7 @@ void Opcion1(int[] dias, int[] semanas)
                 Console.WriteLine("Hizo calor afuera.");
                 break;
         }
+        Console.WriteLine();
         tecla = Regresar();
     }
     while (tecla == "1");
@@ -159,7 +236,7 @@ void Opcion2(int[] dias, int[] semanas)
 {
     double[] PromediosSemanales(int[] dias, int[] semanas, int[,] mes)
     {
-        double[] promedios = new double[semanas.Length];
+        double[] promedios = [];
         foreach(int semana in semanas)
         {
             int suma = 0;
@@ -174,7 +251,7 @@ void Opcion2(int[] dias, int[] semanas)
                 }
             }
             double promedio = suma / cont_dias;
-            promedios.Append(promedio);
+            promedios = [..promedios, promedio];
         }
         return promedios;
     }
@@ -346,36 +423,17 @@ void Opcion7()
     Titulo();
     Console.WriteLine("PRONÓSTICO PARA LOS 5 DÍAS POSTERIORES.");
     Console.WriteLine();
+    Console.WriteLine("Las temperaturas previstas para los 5 días posteriores al mes son las siguientes:");
     {
-        string?[] dias = { "Mañana", "Pasado mañana", "Dentro de tres días", "Dentro de cuatro días", "Dentro de cinco días" };
+        int[] dias_post = { 1, 2, 3, 4, 5 };
         Random random = new Random();
         int min = (mes[2,4] - 5);
         int max = (mes[2,4] + 5);
-        for (int i = 0; i < dias.Length; i++)
+        foreach (int dia in dias_post)
         {
             int temp_aleatoria = random.Next(min, max);
-            Console.WriteLine(dias[i] + ": temperatura de " + temp_aleatoria + "°C .");
+            Console.WriteLine("Para el" + dias_post + "° día: temperatura de " + temp_aleatoria + "°C .");
         }
     }
     string? tecla = RegresarDirecto();
 }
-
-void MostrarMatriz(int[,] matriz)
-{
-    Console.WriteLine("Largo de la matriz" + matriz.GetLength(0));
-    Console.WriteLine("ancho de la matriz" + matriz.GetLength(1));
-    for (int fila =1; fila <= matriz.GetLength(1); fila++)
-    {
-        Console.Write("| ");
-        for (int columna = 1; columna <= matriz.GetLength(0); columna++)
-        {
-            Console.Write(mes[columna-1, fila - 1].ToString() + ' ');
-        }
-        Console.WriteLine('|');
-    }
-}
-
-//MostrarMatriz(mes);
-
-
-
