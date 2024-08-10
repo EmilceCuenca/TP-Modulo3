@@ -114,6 +114,7 @@ int ObtenerOpcion(int[] opciones, string texto)
     bool opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int opcion);
     while (!opc_valida || !Array.Exists(opciones, op => op == opcion))
     {
+        Console.WriteLine();
         Console.WriteLine(texto);
         opc_valida = int.TryParse(Console.ReadKey().KeyChar.ToString(), out opcion);
     }
