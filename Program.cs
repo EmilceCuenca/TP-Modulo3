@@ -425,7 +425,6 @@ void Opcion7()
     Console.WriteLine("PRONÓSTICO PARA LOS 5 DÍAS POSTERIORES.");
     Console.WriteLine();
     Console.WriteLine("Las temperaturas previstas para los 5 días posteriores al mes son las siguientes:");
-    {
         int[] dias_post = { 1, 2, 3, 4, 5 };
         Random random = new Random();
         int min = (mes[2,4] - 5);
@@ -433,8 +432,7 @@ void Opcion7()
         foreach (int dia in dias_post)
         {
             int temp_aleatoria = random.Next(min, max);
-            Console.WriteLine("Para el" + dias_post + "° día: temperatura de " + temp_aleatoria + "°C .");
+            Console.WriteLine("Para el" + dia + "° día: temperatura de " + temp_aleatoria + "°C .");
         }
-    }
     string? tecla = RegresarDirecto();
 }
