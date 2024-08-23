@@ -1,7 +1,7 @@
 ﻿using System;
 
-Controlador LeoC = new Controlador();
-LeoC.Iniciar();
+Controlador controlador = new Controlador();
+controlador.Iniciar();
 
 public class Vista
 {

@@ -1,8 +1,0 @@
-﻿Compilación iniciada a las 17:19...
-1>------ Operación Compilar iniciada: Proyecto: TP-Modulo3, configuración: Debug Any CPU ------
-1>Omitiendo analizadores para acelerar la compilación. Puede ejecutar los comandos "Build" o "Rebuild" para ejecutar los analizadores.
-1>C:\Users\emilc\source\repos\TP-Modulo3\TP-Modulo3\Program.cs(5,5,5,18): warning CS8321: La función local "ObtenerOpcion" se declara pero nunca se usa.
-1>TP-Modulo3 -> C:\Users\emilc\source\repos\TP-Modulo3\TP-Modulo3\bin\Debug\net8.0\TP-Modulo3.dll
-1>Compilación del proyecto "TP-Modulo3.csproj" terminada.
-========== Compilación: 1 correcto, 0 erróneo, 0 actualizado, 0 omitido ==========
-========== Compilar completado a las 17:19 y tardó 00,688 segundos ==========
